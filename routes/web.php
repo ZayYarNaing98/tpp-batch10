@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ArticleController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -42,3 +43,14 @@ Route::prefix('backend')->group(function(){
         return redirect()->route('tpp.dashboard');
     });
 });
+
+
+// Laravel View
+// Route::get('/articles', function(){
+//     return view('articles.index');
+// });
+
+
+// Laravel Controller
+Route::get('/articles', [ArticleController::class, 'index']);
+Route::get('/articles/{id}', [ArticleController::class, 'show'])->name('articles.show');
