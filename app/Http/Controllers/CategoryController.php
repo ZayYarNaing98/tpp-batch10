@@ -25,7 +25,17 @@ class CategoryController extends Controller
         $data = $request->validate([
             'name' => 'required|string',
             'description' => 'required|string',
+            'image' => 'required'
         ]);
+
+        if ($request->hasFile('image'))
+        {
+            $imageName = time() . '.' . $request->image->extension();
+
+            $request->image->move(public_path('categoryImages'), $imageName);
+
+            $data = array_merge($data, ['image' => $imageName]);
+        }
 
         Category::create($data);
 

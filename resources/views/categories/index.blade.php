@@ -19,6 +19,7 @@
                 <th class="bg-secondary text-white">ID</th>
                 <th class="bg-secondary text-white">NAME</th>
                 <th class="bg-secondary text-white">DESCRIPTION</th>
+                <th class="bg-secondary text-white">IMAGE</th>
                 <th class="bg-secondary text-white">ACTION</th>
             </thead>
             <tbody>
@@ -27,6 +28,9 @@
                         <td>{{ $category->id }}</td>
                         <td>{{ $category->name }}</td>
                         <td>{{ $category->description }}</td>
+                        <td>
+                            <img src="{{ asset('categoryImages/'. $category->image) }}" alt="{{ $category->image }}" style="width: 100px; height: auto;">
+                        </td>
                         <td class="d-flex">
                             <a href="{{ route('categories.edit', ['id' => $category->id]) }}"
                                 class="btn btn-outline-secondary btn-sm me-2">Edit</a>
