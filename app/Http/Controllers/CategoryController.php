@@ -44,7 +44,6 @@ class CategoryController extends Controller
 
     public function edit($id)
     {
-        // dd($id);
         $category = Category::find($id);
 
         return view('categories.edit', compact('category'));
@@ -52,7 +51,6 @@ class CategoryController extends Controller
 
     public function update(CategoryUpdateRequest $request)
     {
-        // dd('hree');
         $category = Category::find($request->id);
 
         $category->update([

@@ -20,7 +20,20 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        Product::create($request->only('name', 'description', 'price'));
+        $data = $request->validate([
+            'name' => 'required|string',
+            'description' => 'required|string',
+            'price' => 'required|numeric|min:0',
+            'image' => 'required|image',
+        ]);
+
+        if ($request->hasFile('image')) {
+            $imageName = time() . '.' . $request->image->extension();
+            $request->image->move(public_path('productImages'), $imageName);
+            $data['image'] = $imageName;
+        }
+
+        Product::create($data);
         return redirect()->route('products.index');
     }
 
@@ -32,8 +45,24 @@ class ProductController extends Controller
 
     public function update(Request $request, $id)
     {
+        $data = $request->validate([
+            'name' => 'required|string',
+            'description' => 'required|string',
+            'price' => 'required|numeric|min:0',
+            'image' => 'nullable|image',
+        ]);
+
         $product = Product::findOrFail($id);
-        $product->update($request->only('name', 'description', 'price'));
+
+        if ($request->hasFile('image')) {
+            $imageName = time() . '.' . $request->image->extension();
+            $request->image->move(public_path('productImages'), $imageName);
+            $data['image'] = $imageName;
+        } else {
+            unset($data['image']);
+        }
+
+        $product->update($data);
         return redirect()->route('products.index');
     }
 
