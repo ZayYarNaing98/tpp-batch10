@@ -15,26 +15,31 @@ class ProductSeeder extends Seeder
     {
         $products = [
             [
+                'category_id' => 1,
                 'name' => 'Laptop',
                 'description' => 'A high-performance laptop for work and gaming.',
                 'price' => 1200,
             ],
             [
+                'category_id' => 1,
                 'name' => 'Smartphone',
                 'description' => 'A latest model smartphone with advanced features.',
                 'price' => 800,
             ],
             [
+                'category_id' => 2,
                 'name' => 'Headphones',
                 'description' => 'Noise-cancelling headphones for immersive sound experience.',
                 'price' => 150,
             ],
             [
+                'category_id' => 2,
                 'name' => 'Smartwatch',
                 'description' => 'A stylish smartwatch with fitness tracking features.',
                 'price' => 200,
             ],
             [
+                'category_id' => 3,
                 'name' => 'Tablet',
                 'description' => 'A lightweight tablet for entertainment and productivity.',
                 'price' => 500,
