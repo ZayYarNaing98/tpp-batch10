@@ -50,16 +50,19 @@ class ProductController extends Controller
     public function edit($id)
     {
         $product = Product::findOrFail($id);
-        return view('products.edit', compact('product'));
+        $categories = Category::get();
+        return view('products.edit', compact('product', 'categories'));
     }
 
     public function update(Request $request, $id)
     {
         $data = $request->validate([
-            'name' => 'required|string',
+            'name'        => 'required|string',
             'description' => 'required|string',
-            'price' => 'required|min:0',
-            'image' => 'nullable|image',
+            'price'       => 'required|min:0',
+            'image'       => 'nullable|image',
+            'category_id' => 'required',
+            'status'      => 'nullable',
         ]);
 
         $product = Product::findOrFail($id);
@@ -71,6 +74,9 @@ class ProductController extends Controller
         } else {
             unset($data['image']);
         }
+
+        $data['status'] = $request->has('status') ? true : false;
+        $data['category_id'] = $request->category_id;
 
         $product->update($data);
         return redirect()->route('products.index');

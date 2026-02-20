@@ -26,6 +26,23 @@
                 <input type="number" class="form-control" id="price" name="price" value="{{ $product->price }}">
             </div>
             <div class="mb-3">
+                <label for="category_id" class="form-label">Category</label>
+                <select class="form-select" name="category_id" id="category_id">
+                    @foreach ($categories as $category)
+                        <option value="{{ $category->id }}" {{ $product->category_id == $category->id ? 'selected' : '' }}>
+                            {{ $category->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Status</label>
+                <div>
+                    <input type="checkbox" class="form-check-input" id="status" name="status" {{ $product->status ? 'checked' : '' }}>
+                    <label class="form-check-label ms-1" for="status">Active</label>
+                </div>
+            </div>
+            <div class="mb-3">
                 <label for="image" class="form-label">Product Image</label>
                 @if ($product->image)
                     <div class="mb-2">
