@@ -1,16 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-</head>
-<body>
-    <div class="container">
-        <h1 class="mt-4">Create New Product</h1>
-        <a href="{{ route('products.index') }}" class="btn btn-outline-secondary btn-sm my-3">Back to List</a>
+@extends('layouts.app')
+
+@section('content')
+<h1 class="mb-3">Create New Product</h1>
+<a href="{{ route('products.index') }}" class="btn btn-outline-secondary btn-sm mb-3">Back to List</a>
+<div class="card" style="max-width: 600px;">
+    <div class="card-body">
         <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="mb-3">
@@ -35,14 +29,17 @@
                 @enderror
             </div>
             <div class="mb-3">
-                <label for="status" class="form-label">Active or Expired:</label>
-                <input type="checkbox" class="form-check-input mb-2" name="status" role="switch" checked/>
+                <label for="status" class="form-label">Status</label>
+                <div>
+                    <input type="checkbox" class="form-check-input" id="status" name="status" checked>
+                    <label class="form-check-label ms-1" for="status">Active</label>
+                </div>
             </div>
             <div class="mb-3">
-                <label for="category" class="form-label">Select your category:</label>
-                <select name="category_id" id="category_id">
+                <label for="category_id" class="form-label">Category</label>
+                <select name="category_id" id="category_id" class="form-select">
                     @foreach ($categories as $category)
-                        <option value="{{ $category->id }}">{{$category->name}}</option>
+                        <option value="{{ $category->id }}">{{ $category->name }}</option>
                     @endforeach
                 </select>
             </div>
@@ -56,6 +53,5 @@
             <button type="submit" class="btn btn-success btn-sm">Create Product</button>
         </form>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
-</body>
-</html>
+</div>
+@endsection
