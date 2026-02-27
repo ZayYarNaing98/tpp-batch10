@@ -3,11 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Services\User\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    protected $userService;
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
+
     public function index()
     {
         $users = User::all();
@@ -83,5 +90,13 @@ class UserController extends Controller
     {
         User::findOrFail($id)->delete();
         return redirect()->route('users.index');
+    }
+
+    public function userStatus($id)
+    {
+        $this->userService->userStatus($id);
+
+        return redirect()->route('users.index');
+
     }
 }
