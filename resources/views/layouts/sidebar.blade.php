@@ -36,4 +36,18 @@
             </a>
         </li>
     </ul>
+
+    <p class="sidebar-heading mt-2">Access Control</p>
+    <ul class="nav flex-column">
+        <li class="nav-item">
+            <a class="nav-link {{ request()->is('roles*') ? 'active' : '' }}" href="{{ route('roles.index') }}">
+                <i class="bi bi-shield-lock"></i> Roles
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {{ request()->is('permissions*') ? 'active' : '' }}" href="{{ route('permissions.index') }}">
+                <i class="bi bi-key"></i> Permissions
+            </a>
+        </li>
+    </ul>
 </nav>

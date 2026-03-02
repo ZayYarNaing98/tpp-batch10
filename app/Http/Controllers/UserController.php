@@ -2,28 +2,33 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Repositories\User\UserRepositoryInterface;
 use App\Services\User\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
+    protected $userRepository;
     protected $userService;
-    public function __construct(UserService $userService)
+
+    public function __construct(UserRepositoryInterface $userRepository, UserService $userService)
     {
-        $this->userService = $userService;
+        $this->userRepository = $userRepository;
+        $this->userService    = $userService;
     }
 
     public function index()
     {
-        $users = User::all();
+        $users = $this->userRepository->index();
         return view('users.index', compact('users'));
     }
 
     public function create()
     {
-        return view('users.create');
+        $roles = Role::all();
+        return view('users.create', compact('roles'));
     }
 
     public function store(Request $request)
@@ -37,6 +42,7 @@ class UserController extends Controller
             'gender'   => 'required|in:male,female,other',
             'status'   => 'nullable',
             'image'    => 'nullable|image',
+            'role'     => 'nullable|exists:roles,name',
         ]);
 
         if ($request->hasFile('image')) {
@@ -45,17 +51,22 @@ class UserController extends Controller
             $data['image'] = $imageName;
         }
 
-        $data['status'] = $request->has('status') ? true : false;
+        $data['status']   = $request->has('status') ? true : false;
         $data['password'] = Hash::make($data['password']);
 
-        User::create($data);
+        $role = $data['role'] ?? null;
+        unset($data['role']);
+
+        $this->userRepository->store($data, $role);
+
         return redirect()->route('users.index');
     }
 
     public function edit($id)
     {
-        $user = User::findOrFail($id);
-        return view('users.edit', compact('user'));
+        $user  = $this->userRepository->show($id);
+        $roles = Role::all();
+        return view('users.edit', compact('user', 'roles'));
     }
 
     public function update(Request $request, $id)
@@ -68,9 +79,8 @@ class UserController extends Controller
             'gender'  => 'required|in:male,female,other',
             'status'  => 'nullable',
             'image'   => 'nullable|image',
+            'role'    => 'nullable|exists:roles,name',
         ]);
-
-        $user = User::findOrFail($id);
 
         if ($request->hasFile('image')) {
             $imageName = time() . '.' . $request->image->extension();
@@ -82,21 +92,23 @@ class UserController extends Controller
 
         $data['status'] = $request->has('status') ? true : false;
 
-        $user->update($data);
+        $role = $data['role'] ?? null;
+        unset($data['role']);
+
+        $this->userRepository->update($id, $data, $role);
+
         return redirect()->route('users.index');
     }
 
     public function delete($id)
     {
-        User::findOrFail($id)->delete();
+        $this->userRepository->delete($id);
         return redirect()->route('users.index');
     }
 
     public function userStatus($id)
     {
         $this->userService->userStatus($id);
-
         return redirect()->route('users.index');
-
     }
 }

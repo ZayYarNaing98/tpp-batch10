@@ -13,6 +13,7 @@
                 <th>Phone</th>
                 <th>Gender</th>
                 <th>Address</th>
+                <th>Role</th>
                 <th>Status</th>
                 <th>Actions</th>
             </tr>
@@ -34,6 +35,13 @@
                     <td>{{ $user->phone ?? '—' }}</td>
                     <td>{{ ucfirst($user->gender ?? '—') }}</td>
                     <td>{{ $user->address ?? '—' }}</td>
+                    <td>
+                        @if ($user->roles->isNotEmpty())
+                            <span class="badge bg-primary">{{ $user->roles->first()->name }}</span>
+                        @else
+                            <span class="text-muted">—</span>
+                        @endif
+                    </td>
                     <td>
                         <form action="{{route('users.status', ['id' => $user->id])}}" method="POST">
                             @csrf

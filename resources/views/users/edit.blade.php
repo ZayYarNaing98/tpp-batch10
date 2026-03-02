@@ -66,6 +66,21 @@
                     <div class="invalid-feedback d-block">{{ $message }}</div>
                 @enderror
             </div>
+            <div class="mb-3">
+                <label for="role" class="form-label">Role</label>
+                <select class="form-select" id="role" name="role">
+                    <option value="">— No Role —</option>
+                    @foreach ($roles as $role)
+                        <option value="{{ $role->name }}"
+                            {{ old('role', $user->roles->first()?->name) === $role->name ? 'selected' : '' }}>
+                            {{ $role->name }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('role')
+                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                @enderror
+            </div>
             <button type="submit" class="btn btn-primary btn-sm">Update User</button>
         </form>
     </div>
